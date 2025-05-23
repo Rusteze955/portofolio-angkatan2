@@ -13,7 +13,8 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         $row = mysqli_fetch_assoc($query);
         $_SESSION['NAME'] = $row['name'];
         $_SESSION['ID_USER'] = $row['id'];
-        header("location:dashboard.php");
+        $_SESSION['LEVEL'] = $row['id_level'];
+        header("location:dashboard.php?level=" . base64_encode($_SESSION['LEVEL']));
     } else {
         header("location:login.php?error=login");
     }
