@@ -1,61 +1,174 @@
 <?php
-include "config/koneksi.php";
-// fungsi insert
 if (isset($_POST['simpan'])) {
-    $profile_name = $_POST['profile_name'];
-    $profesion = $_POST['profesion'];
-    $description = $_POST['description'];
-    // proses simpan foto
-    $photo = $_FILES['photo'];
-    // var_dump($photo)
-    if ($photo['error'] == 0) {
-        $fileName = uniqid() . "_" . basename($photo['name']);
-        $filePath = "uploads/" . $fileName;
-        move_uploaded_file($photo['tmp_name'], $filePath);
-        $insertQ = mysqli_query($config, "INSERT INTO profiles(profile_name, profesion, description, photo) VALUES ('$profile_name', '$profesion', '$description', '$fileName')");
-    }
+    $name = $_POST['name'];
+    $position_name = $_POST['position_name'];
+    $birthday = $_POST['birthday'];
+    $website = $_POST['website'];
+    $phone = $_POST['phone'];
+    $city = $_POST['name'];
+    $age = $_POST['age'];
+    $degree = $_POST['degree'];
+    $email = $_POST['email'];
+    $freelance = $_POST['freelance'];
+    $status = $_POST['status'];
+    $photo = $_FILES['photo']['name'];
+    $size = $_FILES['photo']['size'];
 
-    if ($insertQ) {
-        header("location:dashboard.php?level=" . base64_encode($_SESSION['LEVEL']) . "&page=manage-profile");
-    }
-}
-
-
-if (isset($_GET['del'])) {
-    $idDel = $_GET['del'];
-
-    $selectPhoto = mysqli_query($config, "SELECT photo FROM profiles WHERE id =$idDel");
-    $rowPhoto = mysqli_fetch_assoc($selectPhoto);
-    if (isset($rowPhoto['photo'])) {
-        unlink("uploads/" . $rowPhoto['photo']);
-    }
-    $delete = mysqli_query($config, "DELETE FROM profiles WHERE id = $idDel");
-}
-$selectProfile = mysqli_query($config, "SELECT * FROM profiles");
-$row = mysqli_fetch_assoc($selectProfile);
-?>
-<form action="" method="post" enctype="multipart/form-data">
-    <div class="m-2" style="width:55%">
-        <label class="form-label">Profile Name</label>
-        <input type="text" class="form-control" value="<?php echo !isset($row['profile_name']) ? '' : $row['profile_name'] ?>" name="profile_name">
-
-        <label class="form-label">Profesion</label>
-        <input type="text" class="form-control" value="<?php echo !isset($row['profesion']) ? '' : $row['profesion'] ?>" name="profesion">
-
-        <label class="form-label">Description</label>
-        <textarea class="form-control" value="" name="description" cols="30" rows="5"><?php echo !isset($row['description']) ? '' : $row['description'] ?></textarea>
-
-        <label class="form-label">Photo</label>
-        <input type="file" name="photo" class="form-control">
-        <img src="uploads/<?php echo $row['photo'] ?>" width="300" alt=""><br>
-        <?php if (empty($row['profile_name'])) {
-        ?>
-            <button type="submit" name="simpan" class="btn btn-primary mt-2">Simpan</button>
-        <?php
+    // mencari apakah di dalam tabel profiles ada data nya, jika ada maka update, jika tidak maka insert mysqli_num_row()
+    $queryProfile = mysqli_query($config, "SELECT * FROM abouts ORDER BY id DESC");
+    if (mysqli_num_rows($queryProfile) > 0) {
+        // perintah update
+        $rowProfile = mysqli_fetch_assoc($queryProfile);
+        $id = $rowProfile['id'];
+        $update = mysqli_query($config, "UPDATE abouts SET name='$name', position_name='$position_name', photo='$photo', birthday='$birthday', website='$website', phone='$phone', city='$city', age='$age', degree='$degree', email='$email', freelance='$freelance', status='$status' WHERE id = '$id'");
+        header("location:?page=manage-profile&ubah=berhasil");
+    } else {
+        // perintah insert
+        if (!empty($photo)) {
+            // JIKA USER MENGUPLOAD FOTO
         } else {
-        ?>
-            <a onclick="return confirm('YAKIN INGIN HAPUS??')" href="?level=<?php echo base64_encode($_SESSION['LEVEL']) ?>&page=manage-profile&del=<?php echo $row['id'] ?>" class="btn btn-danger mt-2">Delete</a>
-        <?php
-        } ?>
+            // JIKA USER TIDAK MENGUPLOAD FOTO
+            $insertQ = mysqli_query($config, "INSERT INTO abouts (name, position_name, photo, birthday, website, phone, city, age, degree, email, freelance, status) VALUES ('$name', '$position_name', '$photo', '$birthday', '$website', '$phone', '$city', '$age', '$degree', '$email', '$freelance', '$status')");
+        }
+
+        // .png, .jpg, .jpeg
+        $esktensi = ['png', 'jpg', 'jpeg'];
+        // apakah user mengupload gambar dengan ekstensi tersebut? jika iya masukkan gambar ke table dan folder, jika tidak error, ekstensi tidak di temukan
+        // in_array =
+        $ext = pathinfo($photo, PATHINFO_EXTENSION);
+        if (in_array($ext, $ekstensi)) {
+            $error[] = "Mohon maaf, ekstensi tidak di temukan";
+        } else {
+            $query = mysqli_query($config, "INSERT INTO abouts (name, position_name, photo, birthday, website, phone, city, age, degree, email, freelance, status) VALUES ('$name', '$position_name', '$photo', '$birthday', '$website', '$phone', '$city', '$age', '$degree', '$email', '$freelance', '$status')");
+            if ($query) {
+                header("location:?page=profile&tambah=berhasil");
+            }
+        }
+    }
+}
+
+$header = isset($_GET['edit']) ? "Edit" : "Tambah";
+$id_user = isset($_GET['edit']) ? $_GET['edit'] : '';
+$queryEdit = mysqli_query($config, "SELECT * FROM abouts");
+$rowEdit = mysqli_fetch_assoc($queryEdit);
+
+if (isset($_POST['edit'])) {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $password = sha1($_POST['password']);
+
+    if ($password == '') {
+        $queryUpdate = mysqli_query($config, "UPDATE users SET name='$name', email='$email' WHERE id='$id_user'");
+    }
+
+    $queryUpdate = mysqli_query($config, "UPDATE users SET name='$name', email='$email', password='$password' WHERE id='$id_user'");
+    if ($queryUpdate) {
+        header("location:user.php?ubah=berhasil");
+    }
+}
+?>
+
+<form action="" method="post" enctype="multipart/form-data">
+    <div class="mb-3 row">
+        <div class="col-sm-2">
+            <label for="">Nama *</label>
+        </div>
+        <div class="col-sm-10">
+            <input required name="name" type="text" class="form-control" placeholder="Masukkan Nama Anda" value="<?= isset($rowEdit['name']) ? $rowEdit['name'] : '' ?>">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2">
+            <label for="">Position Name *</label>
+        </div>
+        <div class="col-sm-10">
+            <input required name="position_name" type="text" class="form-control" placeholder="Masukkan Email Anda" value="<?= isset($rowEdit['position_name']) ? $rowEdit['position_name'] : '' ?>">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2">
+            <label for="">Birthday *</label>
+        </div>
+        <div class="col-sm-10">
+            <input required name="birthday" type="text" class="form-control" placeholder="Masukkan Nama Anda" value="<?= isset($rowEdit['birthday']) ? $rowEdit['birthday'] : '' ?>">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2">
+            <label for="">Website *</label>
+        </div>
+        <div class="col-sm-10">
+            <input required name="website" type="text" class="form-control" placeholder="Masukkan Nama Anda" value="<?= isset($rowEdit['website']) ? $rowEdit['website'] : '' ?>">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2">
+            <label for="">Phone *</label>
+        </div>
+        <div class="col-sm-10">
+            <input required name="phone" type="text" class="form-control" placeholder="Masukkan Nama Anda" value="<?= isset($rowEdit['phone']) ? $rowEdit['phone'] : '' ?>">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2">
+            <label for="">City *</label>
+        </div>
+        <div class="col-sm-10">
+            <input required name="city" type="text" class="form-control" placeholder="Masukkan Nama Anda" value="<?= isset($rowEdit['city']) ? $rowEdit['city'] : '' ?>">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2">
+            <label for="">Age *</label>
+        </div>
+        <div class="col-sm-10">
+            <input required name="age" type="text" class="form-control" placeholder="Masukkan Nama Anda" value="<?= isset($rowEdit['age']) ? $rowEdit['age'] : '' ?>">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2">
+            <label for="">Degree *</label>
+        </div>
+        <div class="col-sm-10">
+            <input required name="degree" type="text" class="form-control" placeholder="Masukkan Nama Anda" value="<?= isset($rowEdit['degree']) ? $rowEdit['degree'] : '' ?>">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2">
+            <label for="">Email *</label>
+        </div>
+        <div class="col-sm-10">
+            <input required name="email" type="text" class="form-control" placeholder="Masukkan Nama Anda" value="<?= isset($rowEdit['email']) ? $rowEdit['email'] : '' ?>">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2">
+            <label for="">Freelance *</label>
+        </div>
+        <div class="col-sm-10">
+            <input required name="freelance" type="text" class="form-control" placeholder="Masukkan Nama Anda" value="<?= isset($rowEdit['freelance']) ? $rowEdit['freelance'] : '' ?>">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2">
+            <label for="">Foto *</label>
+        </div>
+        <div class="col-sm-10">
+            <input name="photo" type="file">
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-2">
+            <label for="">Status</label>
+        </div>
+        <div>
+            <input type="radio" name="status" value="1" checked> Publish
+            <input type="radio" name="status" value="0"> Draft
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-sm-12">
+            <button name="<?= isset($_GET['edit']) ? 'edit' : 'simpan'; ?>" type="submit" class="btn btn-primary">Simpan</button>
+        </div>
     </div>
 </form>
