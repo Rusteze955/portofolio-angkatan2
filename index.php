@@ -1,10 +1,17 @@
 <?php
 include 'admin/config/koneksi.php';
-$queryprofile = mysqli_query($config, "SELECT * FROM abouts ORDER BY id DESC");
-$rowprofile = mysqli_fetch_assoc($queryprofile);
+if (isset($_POST['send'])) {
+    $your_name = $_POST['your_name'];
+    $your_email = $_POST['your_email'];
+    $subject = $_POST['subject'];
+    $message = $_POST['message'];
 
+    $query = mysqli_query($config, "INSERT INTO contacts (your_name, your_email, subject, message) VALUES ('$your_name','$your_email','$subject', '$message')");
+    if ($query) {
+        header("location:?kirim=berhasil");
+    }
+}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -55,7 +62,7 @@ $rowprofile = mysqli_fetch_assoc($queryprofile);
         <a href="index.html" class="logo d-flex align-items-center justify-content-center">
             <!-- Uncomment the line below if you also wish to use an image logo -->
             <!-- <img src="assets/img/logo.png" alt=""> -->
-            <h1 class="sitename">Alex Smith</h1>
+            <h1 class="sitename">Mulyono</h1>
         </a>
 
         <div class="social-links text-center">
@@ -116,14 +123,14 @@ $rowprofile = mysqli_fetch_assoc($queryprofile);
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
                 <h2>About</h2>
-                <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+                <?php echo isset($rowprofile['description']) ? $rowprofile['description'] : '' ?>
             </div><!-- End Section Title -->
 
             <div class="container" data-aos="fade-up" data-aos-delay="100">
 
                 <div class="row gy-4 justify-content-center">
                     <div class="col-lg-4">
-                        <img src="assets/img/my-profile-img.jpg" class="img-fluid" alt="">
+                        <img src="./admin/uploads/<?php echo $rowprofile['photo'] ?>" class="img-fluid" alt="">
                     </div>
                     <div class="col-lg-8 content">
                         <h2>UI/UX Designer &amp; Web Developer.</h2>
@@ -135,24 +142,20 @@ $rowprofile = mysqli_fetch_assoc($queryprofile);
                             <div class="col-lg-6">
                                 <ul>
                                     <li><i class="bi bi-chevron-right"></i> <strong>Birthday:</strong> <span><?php echo isset($rowprofile['birthday']) ? $rowprofile['birthday'] : '' ?></span></li>
-                                    <li><i class="bi bi-chevron-right"></i> <strong>Website:</strong> <span>www.example.com</span></li>
-                                    <li><i class="bi bi-chevron-right"></i> <strong>Phone:</strong> <span>+123 456 7890</span></li>
-                                    <li><i class="bi bi-chevron-right"></i> <strong>City:</strong> <span>New York, USA</span></li>
+                                    <li><i class="bi bi-chevron-right"></i> <strong>Website:</strong> <span><?php echo isset($rowprofile['website']) ? $rowprofile['website'] : '' ?></span></li>
+                                    <li><i class="bi bi-chevron-right"></i> <strong>Phone:</strong> <span><?php echo isset($rowprofile['phone']) ? $rowprofile['phone'] : '' ?></span></li>
+                                    <li><i class="bi bi-chevron-right"></i> <strong>City:</strong> <span><?php echo isset($rowprofile['city']) ? $rowprofile['city'] : '' ?></span></li>
                                 </ul>
                             </div>
                             <div class="col-lg-6">
                                 <ul>
-                                    <li><i class="bi bi-chevron-right"></i> <strong>Age:</strong> <span>30</span></li>
-                                    <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> <span>Master</span></li>
-                                    <li><i class="bi bi-chevron-right"></i> <strong>Email:</strong> <span>email@example.com</span></li>
-                                    <li><i class="bi bi-chevron-right"></i> <strong>Freelance:</strong> <span>Available</span></li>
+                                    <li><i class="bi bi-chevron-right"></i> <strong>Age:</strong> <span><?php echo isset($rowprofile['age']) ? $rowprofile['age'] : '' ?></span></li>
+                                    <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> <span><?php echo isset($rowprofile['degree']) ? $rowprofile['degree'] : '' ?></span></li>
+                                    <li><i class="bi bi-chevron-right"></i> <strong>Email:</strong> <span><?php echo isset($rowprofile['email']) ? $rowprofile['email'] : '' ?></span></li>
+                                    <li><i class="bi bi-chevron-right"></i> <strong>Freelance:</strong> <span><?php echo isset($rowprofile['freelance']) ? $rowprofile['freelance'] : '' ?></span></li>
                                 </ul>
                             </div>
                         </div>
-                        <p class="py-3">
-                            Officiis eligendi itaque labore et dolorum mollitia officiis optio vero. Quisquam sunt adipisci omnis et ut. Nulla accusantium dolor incidunt officia tempore. Et eius omnis.
-                            Cupiditate ut dicta maxime officiis quidem quia. Sed et consectetur qui quia repellendus itaque neque.
-                        </p>
                     </div>
                 </div>
 
@@ -751,17 +754,17 @@ $rowprofile = mysqli_fetch_assoc($queryprofile);
                     </div>
 
                     <div class="col-lg-7">
-                        <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+                        <form action="" method="post" data-aos="fade-up" data-aos-delay="200">
                             <div class="row gy-4">
 
                                 <div class="col-md-6">
                                     <label for="name-field" class="pb-2">Your Name</label>
-                                    <input type="text" name="name" id="name-field" class="form-control" required="">
+                                    <input type="text" name="your_name" id="name-field" class="form-control" required="">
                                 </div>
 
                                 <div class="col-md-6">
                                     <label for="email-field" class="pb-2">Your Email</label>
-                                    <input type="email" class="form-control" name="email" id="email-field" required="">
+                                    <input type="email" class="form-control" name="your_email" id="email-field" required="">
                                 </div>
 
                                 <div class="col-md-12">
@@ -775,11 +778,7 @@ $rowprofile = mysqli_fetch_assoc($queryprofile);
                                 </div>
 
                                 <div class="col-md-12 text-center">
-                                    <div class="loading">Loading</div>
-                                    <div class="error-message"></div>
-                                    <div class="sent-message">Your message has been sent. Thank you!</div>
-
-                                    <button type="submit">Send Message</button>
+                                    <button class="btn btn-primary" type="submit" name="send">Send Message</button>
                                 </div>
 
                             </div>

@@ -23,7 +23,7 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <li><a class="dropdown-item" href="?page=contact">Contact</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -39,7 +39,7 @@
                         <a class="nav-link" href="?page=manage-profile">Experience</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?page=manage-profile">Contact</a>
+                        <a class="nav-link" href="?page=contact">Contact</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="?page=manage-profile">Galleries</a>
@@ -51,7 +51,7 @@
                 <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <?php echo $_name ?>
+                            <?php echo $_SESSION['NAME']; ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="php/keluar.php">Keluar</a></li>

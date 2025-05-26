@@ -38,7 +38,7 @@ if (isset($_POST['edit'])) {
                 <label for="">Nama *</label>
             </div>
             <div class="col-sm-10">
-                <input required name="name" type="nama" class="form-control" placeholder="Masukkan Nama Anda" value="<?= isset($_GET['edit']) ? $rowEdit['name'] : '' ?>">
+                <input required name="name" type="nama" class="form-control" placeholder="Masukkan Nama Anda" value="<?= isset($_rowEdit['edit']) ? $rowEdit['name'] : '' ?>">
             </div>
         </div>
         <div class="mb-3 row">
@@ -46,7 +46,7 @@ if (isset($_POST['edit'])) {
                 <label for="">Email *</label>
             </div>
             <div class="col-sm-10">
-                <input required name="email" type="email" class="form-control" placeholder="Masukkan Email Anda" value="<?= isset($_GET['edit']) ? $rowEdit['email'] : '' ?>">
+                <input required name="email" type="email" class="form-control" placeholder="Masukkan Email Anda" value="<?= isset($_rowEdit['edit']) ? $rowEdit['email'] : '' ?>">
             </div>
         </div>
         <div class="mb-3 row">
