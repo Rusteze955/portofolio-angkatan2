@@ -1,5 +1,5 @@
 <?php
-
+$id_level = isset($_SESSION['LEVEL']) ? $_SESSION['LEVEL'] : '';
 ?>
 <header class="shadow">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -19,33 +19,31 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="?page=manage-profile">Management Profile</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <!-- jika level admin maka bisa dapat halaman user, bukan admin maka janagan atau hilang -->
+                            <?php if ($id_level == 1): ?>
+                                <li><a class="dropdown-item" href="?page=user">User</a></li>
+                            <?php endif; ?>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item" href="?page=contact">Contact</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?page=user">User</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?page=manage-profile">Profile</a>
+                        <a class="nav-link" href="">Skill</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?page=manage-profile">Skill</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?page=manage-profile">Experience</a>
+                        <a class="nav-link" href="?page=portofolio">Portofolio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="?page=contact">Contact</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?page=manage-profile">Galleries</a>
+                        <a class="nav-link" href="">Galleries</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?page=manage-profile">Abot Me</a>
+                        <a class="nav-link" href="">Abot Me</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav mr-auto mb-2 mb-lg-0">

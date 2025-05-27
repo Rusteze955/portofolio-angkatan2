@@ -6,6 +6,9 @@ if (!$_name) {
     header("location:index.php?access=failed");
 }
 include 'config/koneksi.php';
+// print_r($_SESSION);
+// die;
+
 ?>
 
 <!DOCTYPE html>

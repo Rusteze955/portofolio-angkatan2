@@ -10,9 +10,6 @@ if (isset($_GET['delete'])) {
 ?>
 <div class="card-body">
     <div class="tabel-responsive">
-        <div align="right" class="mb-3">
-            <a href="?page=tambah-user" class="btn btn-primary">Tambah</a>
-        </div>
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>

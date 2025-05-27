@@ -11,6 +11,11 @@ if (isset($_POST['send'])) {
         header("location:?kirim=berhasil");
     }
 }
+$queryProfile = mysqli_query($config, "SELECT * FROM abouts ORDER BY id DESC");
+$rowProfile = mysqli_fetch_assoc($queryProfile);
+
+$selectCategories = mysqli_query($config, "SELECT * FROM portofolio ORDER BY id DESC");
+$rowCategories = mysqli_fetch_all($selectProfile, MYSQLI_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -111,7 +116,7 @@ if (isset($_POST['send'])) {
             <img src="depan/assets/img/hero-bg.jpg" alt="" data-aos="fade-in" class="">
 
             <div class="container" data-aos="fade-up" data-aos-delay="100">
-                <h2><?php echo isset($rowprofile['name']) ? $rowprofile['name'] : '' ?></h2>
+                <h2><?php echo isset($rowProfile['name']) ? $rowProfile['name'] : '' ?></h2>
                 <p>I'm <span class="typed" data-typed-items="Designer, Developer, Freelancer, Photographer">Designer</span><span class="typed-cursor typed-cursor--blink" aria-hidden="true"></span><span class="typed-cursor typed-cursor--blink" aria-hidden="true"></span></p>
             </div>
 
@@ -123,14 +128,14 @@ if (isset($_POST['send'])) {
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
                 <h2>About</h2>
-                <?php echo isset($rowprofile['description']) ? $rowprofile['description'] : '' ?>
+                <?php echo isset($rowProfile['description']) ? $rowProfile['description'] : '' ?>
             </div><!-- End Section Title -->
 
             <div class="container" data-aos="fade-up" data-aos-delay="100">
 
                 <div class="row gy-4 justify-content-center">
                     <div class="col-lg-4">
-                        <img src="./admin/uploads/<?php echo $rowprofile['photo'] ?>" class="img-fluid" alt="">
+                        <img src="./admin/uploads/<?php echo $rowProfile['photo'] ?>" class="img-fluid" alt="">
                     </div>
                     <div class="col-lg-8 content">
                         <h2>UI/UX Designer &amp; Web Developer.</h2>
@@ -141,18 +146,18 @@ if (isset($_POST['send'])) {
                         <div class="row">
                             <div class="col-lg-6">
                                 <ul>
-                                    <li><i class="bi bi-chevron-right"></i> <strong>Birthday:</strong> <span><?php echo isset($rowprofile['birthday']) ? $rowprofile['birthday'] : '' ?></span></li>
-                                    <li><i class="bi bi-chevron-right"></i> <strong>Website:</strong> <span><?php echo isset($rowprofile['website']) ? $rowprofile['website'] : '' ?></span></li>
-                                    <li><i class="bi bi-chevron-right"></i> <strong>Phone:</strong> <span><?php echo isset($rowprofile['phone']) ? $rowprofile['phone'] : '' ?></span></li>
-                                    <li><i class="bi bi-chevron-right"></i> <strong>City:</strong> <span><?php echo isset($rowprofile['city']) ? $rowprofile['city'] : '' ?></span></li>
+                                    <li><i class="bi bi-chevron-right"></i> <strong>Birthday:</strong> <span><?php echo isset($rowProfile['birthday']) ? $rowProfile['birthday'] : '' ?></span></li>
+                                    <li><i class="bi bi-chevron-right"></i> <strong>Website:</strong> <span><?php echo isset($rowProfile['website']) ? $rowProfile['website'] : '' ?></span></li>
+                                    <li><i class="bi bi-chevron-right"></i> <strong>Phone:</strong> <span><?php echo isset($rowProfile['phone']) ? $rowProfile['phone'] : '' ?></span></li>
+                                    <li><i class="bi bi-chevron-right"></i> <strong>City:</strong> <span><?php echo isset($rowProfile['city']) ? $rowProfile['city'] : '' ?></span></li>
                                 </ul>
                             </div>
                             <div class="col-lg-6">
                                 <ul>
-                                    <li><i class="bi bi-chevron-right"></i> <strong>Age:</strong> <span><?php echo isset($rowprofile['age']) ? $rowprofile['age'] : '' ?></span></li>
-                                    <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> <span><?php echo isset($rowprofile['degree']) ? $rowprofile['degree'] : '' ?></span></li>
-                                    <li><i class="bi bi-chevron-right"></i> <strong>Email:</strong> <span><?php echo isset($rowprofile['email']) ? $rowprofile['email'] : '' ?></span></li>
-                                    <li><i class="bi bi-chevron-right"></i> <strong>Freelance:</strong> <span><?php echo isset($rowprofile['freelance']) ? $rowprofile['freelance'] : '' ?></span></li>
+                                    <li><i class="bi bi-chevron-right"></i> <strong>Age:</strong> <span><?php echo isset($rowProfile['age']) ? $rowProfile['age'] : '' ?></span></li>
+                                    <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> <span><?php echo isset($rowProfile['degree']) ? $rowProfile['degree'] : '' ?></span></li>
+                                    <li><i class="bi bi-chevron-right"></i> <strong>Email:</strong> <span><?php echo isset($rowProfile['email']) ? $rowProfile['email'] : '' ?></span></li>
+                                    <li><i class="bi bi-chevron-right"></i> <strong>Freelance:</strong> <span><?php echo isset($rowProfile['freelance']) ? $rowProfile['freelance'] : '' ?></span></li>
                                 </ul>
                             </div>
                         </div>
@@ -369,10 +374,9 @@ if (isset($_POST['send'])) {
 
                     <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
                         <li data-filter="*" class="filter-active">All</li>
-                        <li data-filter=".filter-app">App</li>
-                        <li data-filter=".filter-product">Product</li>
-                        <li data-filter=".filter-branding">Branding</li>
-                        <li data-filter=".filter-books">Books</li>
+                        <?php foreach ($rowCategories as $category) : ?>
+                            <li data-filter=".filter-app" <?php echo $category['id'] ?><?php echo $category['name'] ?></li>
+                            <?php endforeach; ?>
                     </ul><!-- End Portfolio Filters -->
 
                     <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
@@ -383,7 +387,7 @@ if (isset($_POST['send'])) {
                                 <div class="portfolio-info">
                                     <h4>App 1</h4>
                                     <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="assets/img/portfolio/app-1.jpg" title="App 1" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                                    <a href="depan/assets/img/portfolio/app-1.jpg" title="App 1" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                                     <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
                                 </div>
                             </div>

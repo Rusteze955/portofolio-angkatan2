@@ -1,11 +1,18 @@
 <?php
-$query = mysqli_query($config, "SELECT * FROM users ORDER BY id DESC");
+if ($_SESSION['LEVEL'] != 1) {
+    echo "<h1>Anda tidak berhak kesini !! </h1>";
+    echo "<a href='dashboard.php' class='btn btn-warning'>Kembali</a>";
+    die;
+    // header("location:dashboard.php?failed=access");
+}
+$query = mysqli_query($config, "SELECT levels.nama_level, users.* FROM users 
+LEFT JOIN levels ON levels.id = users.id_level ORDER BY id DESC");
 $row = mysqli_fetch_all($query, MYSQLI_ASSOC);
 
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $queryDelete = mysqli_query($config, "DELETE FROM users WHERE id='$id'");
-    header("location:user.php?hapus=berhasil");
+    header("location:?page=user&hapus=berhasil");
 }
 ?>
 <div class="card-body">
@@ -17,20 +24,23 @@ if (isset($_GET['delete'])) {
             <thead>
                 <tr>
                     <th>No</th>
+                    <th>Nama Level</th>
                     <th>Nama</th>
                     <th>Email</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($row as $key => $data):  ?>
+                <?php
+                foreach ($row as $key => $data):  ?>
                     <tr>
                         <td><?= $key + 1 ?></td>
+                        <td><?= $data['nama_level'] ?></td>
                         <td><?= $data['name'] ?></td>
                         <td><?= $data['email'] ?></td>
                         <td>
-                            <a href="?page=tambah-user&edit=<?php echo $data['id'] ?>&level=<?php echo base64_encode($_SESSION['LEVEL']) ?>" class="btn btn-success btn-sm">Edit</a>
-                            <a onclick="return confirm('Are you sure??')" href="?user&delete=<?php echo $data['id'] ?>" class="btn btn-warning btn-sm">Delete</a>
+                            <a href="?page=tambah-user&edit=<?php echo $data['id'] ?>" class="btn btn-success btn-sm">Edit</a>
+                            <a onclick="return confirm('Are you sure??')" href="?page=user&delete=<?php echo $data['id'] ?>" class="btn btn-warning btn-sm">Delete</a>
                         </td>
                     </tr>
                 <?php endforeach ?>
