@@ -14,8 +14,14 @@ if (isset($_POST['send'])) {
 $queryProfile = mysqli_query($config, "SELECT * FROM abouts ORDER BY id DESC");
 $rowProfile = mysqli_fetch_assoc($queryProfile);
 
-$selectCategories = mysqli_query($config, "SELECT * FROM portofolio ORDER BY id DESC");
-$rowCategories = mysqli_fetch_all($selectProfile, MYSQLI_ASSOC);
+$selectCategories = mysqli_query($config, "SELECT * FROM categories ORDER BY id DESC");
+$rowCategories = mysqli_fetch_all($selectCategories, MYSQLI_ASSOC);
+
+$selectResume = mysqli_query($config, "SELECT * FROM resume ORDER BY id DESC");
+$rowResume = mysqli_fetch_assoc($selectResume);
+
+$selectServices = mysqli_query($config, "SELECT * FROM services ORDER BY id DESC");
+$rowServices = mysqli_fetch_assoc($selectServices);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -288,7 +294,7 @@ $rowCategories = mysqli_fetch_all($selectProfile, MYSQLI_ASSOC);
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
                 <h2>Resume</h2>
-                <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+                <?php echo isset($rowResume['resume_tabel']) ? $rowResume['resume_tabel'] : '' ?>
             </div><!-- End Section Title -->
 
             <div class="container">
@@ -299,58 +305,36 @@ $rowCategories = mysqli_fetch_all($selectProfile, MYSQLI_ASSOC);
                         <h3 class="resume-title">Sumary</h3>
 
                         <div class="resume-item pb-0">
-                            <h4>Brandon Johnson</h4>
-                            <p><em>Innovative and deadline-driven Graphic Designer with 3+ years of experience designing and developing user-centered digital/print marketing material from initial concept to final, polished deliverable.</em></p>
+                            <h4><?php echo isset($rowResume['name_1']) ? $rowResume['name_1'] : '' ?></h4>
+                            <?php echo isset($rowResume['resume_1']) ? $rowResume['resume_1'] : '' ?>
                             <ul>
-                                <li>Portland par 127,Orlando, FL</li>
-                                <li>(123) 456-7891</li>
-                                <li>alice.barkley@example.com</li>
+                                <li><?php echo isset($rowResume['address']) ? $rowResume['address'] : '' ?></li>
+                                <li><?php echo isset($rowResume['contact']) ? $rowResume['contact'] : '' ?></li>
+                                <li><?php echo isset($rowResume['email']) ? $rowResume['email'] : '' ?></li>
                             </ul>
                         </div><!-- Edn Resume Item -->
 
                         <h3 class="resume-title">Education</h3>
                         <div class="resume-item">
-                            <h4>Master of Fine Arts &amp; Graphic Design</h4>
-                            <h5>2015 - 2016</h5>
-                            <p><em>Rochester Institute of Technology, Rochester, NY</em></p>
-                            <p>Qui deserunt veniam. Et sed aliquam labore tempore sed quisquam iusto autem sit. Ea vero voluptatum qui ut dignissimos deleniti nerada porti sand markend</p>
+                            <h4><?php echo isset($rowResume['title_1']) ? $rowResume['title_1'] : '' ?></h4>
+                            <h5><?php echo isset($rowResume['tahun_1']) ? $rowResume['tahun_1'] : '' ?></h5>
+                            <p><em><?php echo isset($rowResume['kampus']) ? $rowResume['kampus'] : '' ?></em></p>
+                            <?php echo isset($rowResume['resume_2']) ? $rowResume['resume_2'] : '' ?>
                         </div><!-- Edn Resume Item -->
-
-                        <div class="resume-item">
-                            <h4>Bachelor of Fine Arts &amp; Graphic Design</h4>
-                            <h5>2010 - 2014</h5>
-                            <p><em>Rochester Institute of Technology, Rochester, NY</em></p>
-                            <p>Quia nobis sequi est occaecati aut. Repudiandae et iusto quae reiciendis et quis Eius vel ratione eius unde vitae rerum voluptates asperiores voluptatem Earum molestiae consequatur neque etlon sader mart dila</p>
-                        </div><!-- Edn Resume Item -->
-
                     </div>
 
                     <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
                         <h3 class="resume-title">Professional Experience</h3>
                         <div class="resume-item">
-                            <h4>Senior graphic design specialist</h4>
-                            <h5>2019 - Present</h5>
-                            <p><em>Experion, New York, NY </em></p>
+                            <h4><?php echo isset($rowResume['experience']) ? $rowResume['experience'] : '' ?></h4>
+                            <h5><?php echo isset($rowResume['tahun_2']) ? $rowResume['tahun_2'] : '' ?></h5>
+                            <p><em><?php echo isset($rowResume['address_2']) ? $rowResume['address_2'] : '' ?></em></p>
                             <ul>
-                                <li>Lead in the design, development, and implementation of the graphic, layout, and production communication materials</li>
-                                <li>Delegate tasks to the 7 members of the design team and provide counsel on all aspects of the project. </li>
-                                <li>Supervise the assessment of all graphic materials in order to ensure quality and accuracy of the design</li>
-                                <li>Oversee the efficient use of production project budgets ranging from $2,000 - $25,000</li>
+                                <li><?php echo isset($rowResume['isi_1']) ? $rowResume['isi_1'] : '' ?></li>
+                                <li><?php echo isset($rowResume['isi_2']) ? $rowResume['isi_2'] : '' ?></li>
+                                <li><?php echo isset($rowResume['isi_3']) ? $rowResume['isi_3'] : '' ?></li>
                             </ul>
                         </div><!-- Edn Resume Item -->
-
-                        <div class="resume-item">
-                            <h4>Graphic design specialist</h4>
-                            <h5>2017 - 2018</h5>
-                            <p><em>Stepping Stone Advertising, New York, NY</em></p>
-                            <ul>
-                                <li>Developed numerous marketing programs (logos, brochures,infographics, presentations, and advertisements).</li>
-                                <li>Managed up to 5 projects or tasks at a given time while under pressure</li>
-                                <li>Recommended and consulted with clients on the most appropriate graphic design</li>
-                                <li>Created 4+ design presentations and proposals a month for clients and account managers</li>
-                            </ul>
-                        </div><!-- Edn Resume Item -->
-
                     </div>
 
                 </div>
@@ -375,7 +359,8 @@ $rowCategories = mysqli_fetch_all($selectProfile, MYSQLI_ASSOC);
                     <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
                         <li data-filter="*" class="filter-active">All</li>
                         <?php foreach ($rowCategories as $category) : ?>
-                            <li data-filter=".filter-app" <?php echo $category['id'] ?><?php echo $category['name'] ?></li>
+                            <li data-filter=".filter-app" <?php echo $category['id'] ?><?php echo $category['name'] ?>>
+                        </li>
                             <?php endforeach; ?>
                     </ul><!-- End Portfolio Filters -->
 
@@ -539,7 +524,7 @@ $rowCategories = mysqli_fetch_all($selectProfile, MYSQLI_ASSOC);
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
                 <h2>Services</h2>
-                <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+                <?php echo isset($rowServices['description_1']) ? $rowServices['description_1'] : '' ?>
             </div><!-- End Section Title -->
 
             <div class="container">
@@ -549,8 +534,8 @@ $rowCategories = mysqli_fetch_all($selectProfile, MYSQLI_ASSOC);
                     <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="100">
                         <div class="icon flex-shrink-0"><i class="bi bi-briefcase"></i></div>
                         <div>
-                            <h4 class="title"><a href="service-details.html" class="stretched-link">Lorem Ipsum</a></h4>
-                            <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
+                            <h4 class="title"><a href="service-details.html" class="stretched-link">Layanan</a></h4>
+                            <?php echo isset($rowServices['description_2']) ? $rowServices['description_2'] : '' ?>
                         </div>
                     </div>
                     <!-- End Service Item -->
@@ -558,45 +543,19 @@ $rowCategories = mysqli_fetch_all($selectProfile, MYSQLI_ASSOC);
                     <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="200">
                         <div class="icon flex-shrink-0"><i class="bi bi-card-checklist"></i></div>
                         <div>
-                            <h4 class="title"><a href="service-details.html" class="stretched-link">Dolor Sitema</a></h4>
-                            <p class="description">Minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat tarad limino ata</p>
+                            <h4 class="title"><a href="service-details.html" class="stretched-link">Informasi Harga</a></h4>
+                            <?php echo isset($rowServices['description_3']) ? $rowServices['description_3'] : '' ?>
                         </div>
                     </div><!-- End Service Item -->
 
                     <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="300">
                         <div class="icon flex-shrink-0"><i class="bi bi-bar-chart"></i></div>
                         <div>
-                            <h4 class="title"><a href="service-details.html" class="stretched-link">Sed ut perspiciatis</a></h4>
-                            <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>
+                            <h4 class="title"><a href="service-details.html" class="stretched-link">Try & Error</a></h4>
+                            <?php echo isset($rowServices['description_4']) ? $rowServices['description_4'] : '' ?>
                         </div>
                     </div><!-- End Service Item -->
-
-                    <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="400">
-                        <div class="icon flex-shrink-0"><i class="bi bi-binoculars"></i></div>
-                        <div>
-                            <h4 class="title"><a href="service-details.html" class="stretched-link">Magni Dolores</a></h4>
-                            <p class="description">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-                        </div>
-                    </div><!-- End Service Item -->
-
-                    <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="500">
-                        <div class="icon flex-shrink-0"><i class="bi bi-brightness-high"></i></div>
-                        <div>
-                            <h4 class="title"><a href="service-details.html" class="stretched-link">Nemo Enim</a></h4>
-                            <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque</p>
-                        </div>
-                    </div><!-- End Service Item -->
-
-                    <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="600">
-                        <div class="icon flex-shrink-0"><i class="bi bi-calendar4-week"></i></div>
-                        <div>
-                            <h4 class="title"><a href="service-details.html" class="stretched-link">Eiusmod Tempor</a></h4>
-                            <p class="description">Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi</p>
-                        </div>
-                    </div><!-- End Service Item -->
-
                 </div>
-
             </div>
 
         </section><!-- /Services Section -->

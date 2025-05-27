@@ -169,7 +169,7 @@ $rowEdit = mysqli_fetch_assoc($selectProfile);
     <div class="mb-3 row">
         <div class="col-sm-12">
             <label for="">Description *</label>
-            <textarea id="summernote" class="from-control" name="description" cols="30" rows="5" <?= isset($rowEdit['description']) ? $rowEdit['description'] : '' ?>></textarea>
+            <textarea id="summernote" class="form-control" name="description" cols="30" rows="5" <?= isset($rowEdit['description']) ? $rowEdit['description'] : '' ?>></textarea>
         </div>
     </div>
     <div class="mb-3 row">

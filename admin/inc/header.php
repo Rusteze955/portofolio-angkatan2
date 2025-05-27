@@ -40,10 +40,10 @@ $id_level = isset($_SESSION['LEVEL']) ? $_SESSION['LEVEL'] : '';
                         <a class="nav-link" href="?page=contact">Contact</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Galleries</a>
+                        <a class="nav-link" href="?page=service">Service</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Abot Me</a>
+                        <a class="nav-link" href="?page=resume">Resume</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
