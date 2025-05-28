@@ -14,14 +14,28 @@ if (isset($_POST['send'])) {
 $queryProfile = mysqli_query($config, "SELECT * FROM abouts ORDER BY id DESC");
 $rowProfile = mysqli_fetch_assoc($queryProfile);
 
-$selectCategories = mysqli_query($config, "SELECT * FROM categories ORDER BY id DESC");
+$selectCategories = mysqli_query($config, "SELECT * FROM categories");
 $rowCategories = mysqli_fetch_all($selectCategories, MYSQLI_ASSOC);
+
+$selectPortofolios = mysqli_query($config, "SELECT categories.name, portofolios.* FROM portofolios LEFT JOIN categories ON categories.id = portofolios.id_category ORDER BY id DESC");
+$rowPortofolios = mysqli_fetch_all($selectPortofolios, MYSQLI_ASSOC);
 
 $selectResume = mysqli_query($config, "SELECT * FROM resume ORDER BY id DESC");
 $rowResume = mysqli_fetch_assoc($selectResume);
 
 $selectServices = mysqli_query($config, "SELECT * FROM services ORDER BY id DESC");
-$rowServices = mysqli_fetch_assoc($selectServices);
+$rowServices = mysqli_fetch_all($selectServices, MYSQLI_ASSOC);
+
+$selectTestimonial = mysqli_query($config, "SELECT * FROM testimonial ORDER BY id DESC");
+$rowTestimonials = mysqli_fetch_all($selectTestimonial, MYSQLI_ASSOC);
+
+$selectSkill = mysqli_query($config, "SELECT * FROM skill ORDER BY id DESC");
+$rowSkill = mysqli_fetch_all($selectSkill, MYSQLI_ASSOC);
+
+// foreach ($rowPortofolios as $key => $value) {
+//     echo $value['name_porto'];
+// }
+// die;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -233,53 +247,30 @@ $rowServices = mysqli_fetch_assoc($selectServices);
                 <div class="row skills-content skills-animation">
 
                     <div class="col-lg-6">
-
-                        <div class="progress">
-                            <span class="skill"><span>HTML</span> <i class="val">100%</i></span>
-                            <div class="progress-bar-wrap">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div><!-- End Skills Item -->
-
-                        <div class="progress">
-                            <span class="skill"><span>CSS</span> <i class="val">90%</i></span>
-                            <div class="progress-bar-wrap">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div><!-- End Skills Item -->
-
-                        <div class="progress">
-                            <span class="skill"><span>JavaScript</span> <i class="val">75%</i></span>
-                            <div class="progress-bar-wrap">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div><!-- End Skills Item -->
+                        <?php foreach ($rowSkill as $key => $value) { ?>
+                            <?php if ($key % 2 == 0) { ?>
+                                <div class="progress">
+                                    <span class="skill"><span><?php echo $value['name'] ?></span> <i class="val"><?php echo $value['rating'] ?>%</i></span>
+                                    <div class="progress-bar-wrap">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $value['rating'] ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div><!-- End Skills Item -->
+                            <?php } ?>
+                        <?php } ?>
 
                     </div>
 
                     <div class="col-lg-6">
-
-                        <div class="progress">
-                            <span class="skill"><span>PHP</span> <i class="val">80%</i></span>
-                            <div class="progress-bar-wrap">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div><!-- End Skills Item -->
-
-                        <div class="progress">
-                            <span class="skill"><span>WordPress/CMS</span> <i class="val">90%</i></span>
-                            <div class="progress-bar-wrap">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div><!-- End Skills Item -->
-
-                        <div class="progress">
-                            <span class="skill"><span>Photoshop</span> <i class="val">55%</i></span>
-                            <div class="progress-bar-wrap">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div><!-- End Skills Item -->
-
+                        <?php foreach ($rowSkill as $key => $value) { ?>
+                            <?php if ($key % 2 == 1) { ?>
+                                <div class="progress">
+                                    <span class="skill"><span><?php echo $value['name'] ?></span> <i class="val"><?php echo $value['rating'] ?>%</i></span>
+                                    <div class="progress-bar-wrap">
+                                        <div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $value['rating'] ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div><!-- End Skills Item -->
+                            <?php } ?>
+                        <?php } ?>
                     </div>
 
                 </div>
@@ -359,156 +350,25 @@ $rowServices = mysqli_fetch_assoc($selectServices);
                     <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
                         <li data-filter="*" class="filter-active">All</li>
                         <?php foreach ($rowCategories as $category) : ?>
-                            <li data-filter=".filter-app" <?php echo $category['id'] ?><?php echo $category['name'] ?>>
-                        </li>
-                            <?php endforeach; ?>
+                            <li data-filter=".filter-<?php echo $category['name'] ?>"><?php echo ucwords($category['name']) ?></li>
+
+                        <?php endforeach; ?>
                     </ul><!-- End Portfolio Filters -->
 
                     <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
-
-                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-                            <div class="portfolio-content h-100">
-                                <img src="assets/img/portfolio/app-1.jpg" class="img-fluid" alt="">
-                                <div class="portfolio-info">
-                                    <h4>App 1</h4>
-                                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="depan/assets/img/portfolio/app-1.jpg" title="App 1" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                        <?php foreach ($rowPortofolios as $portofolio) : ?>
+                            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-<?php echo $portofolio['name'] ?>">
+                                <div class="portfolio-content h-100">
+                                    <img src="admin/uploads/<?php echo $portofolio['photo']; ?>" class="img-fluid" alt="">
+                                    <div class="portfolio-info">
+                                        <h4><?php echo $portofolio['name_porto'] ?></h4>
+                                        <p></p>
+                                        <a href="admin/uploads/<?php echo $portofolio['photo']; ?>" title="<?php echo $portofolio['name_porto'] ?>" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                                        <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
+                                    </div>
                                 </div>
-                            </div>
-                        </div><!-- End Portfolio Item -->
-
-                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-                            <div class="portfolio-content h-100">
-                                <img src="assets/img/portfolio/product-1.jpg" class="img-fluid" alt="">
-                                <div class="portfolio-info">
-                                    <h4>Product 1</h4>
-                                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="assets/img/portfolio/product-1.jpg" title="Product 1" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                                </div>
-                            </div>
-                        </div><!-- End Portfolio Item -->
-
-                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-                            <div class="portfolio-content h-100">
-                                <img src="assets/img/portfolio/branding-1.jpg" class="img-fluid" alt="">
-                                <div class="portfolio-info">
-                                    <h4>Branding 1</h4>
-                                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="assets/img/portfolio/branding-1.jpg" title="Branding 1" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                                </div>
-                            </div>
-                        </div><!-- End Portfolio Item -->
-
-                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
-                            <div class="portfolio-content h-100">
-                                <img src="assets/img/portfolio/books-1.jpg" class="img-fluid" alt="">
-                                <div class="portfolio-info">
-                                    <h4>Books 1</h4>
-                                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="assets/img/portfolio/books-1.jpg" title="Branding 1" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                                </div>
-                            </div>
-                        </div><!-- End Portfolio Item -->
-
-                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-                            <div class="portfolio-content h-100">
-                                <img src="assets/img/portfolio/app-2.jpg" class="img-fluid" alt="">
-                                <div class="portfolio-info">
-                                    <h4>App 2</h4>
-                                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="assets/img/portfolio/app-2.jpg" title="App 2" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                                </div>
-                            </div>
-                        </div><!-- End Portfolio Item -->
-
-                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-                            <div class="portfolio-content h-100">
-                                <img src="assets/img/portfolio/product-2.jpg" class="img-fluid" alt="">
-                                <div class="portfolio-info">
-                                    <h4>Product 2</h4>
-                                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="assets/img/portfolio/product-2.jpg" title="Product 2" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                                </div>
-                            </div>
-                        </div><!-- End Portfolio Item -->
-
-                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-                            <div class="portfolio-content h-100">
-                                <img src="assets/img/portfolio/branding-2.jpg" class="img-fluid" alt="">
-                                <div class="portfolio-info">
-                                    <h4>Branding 2</h4>
-                                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="assets/img/portfolio/branding-2.jpg" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                                </div>
-                            </div>
-                        </div><!-- End Portfolio Item -->
-
-                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
-                            <div class="portfolio-content h-100">
-                                <img src="assets/img/portfolio/books-2.jpg" class="img-fluid" alt="">
-                                <div class="portfolio-info">
-                                    <h4>Books 2</h4>
-                                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="assets/img/portfolio/books-2.jpg" title="Branding 2" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                                </div>
-                            </div>
-                        </div><!-- End Portfolio Item -->
-
-                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-                            <div class="portfolio-content h-100">
-                                <img src="assets/img/portfolio/app-3.jpg" class="img-fluid" alt="">
-                                <div class="portfolio-info">
-                                    <h4>App 3</h4>
-                                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="assets/img/portfolio/app-3.jpg" title="App 3" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                                </div>
-                            </div>
-                        </div><!-- End Portfolio Item -->
-
-                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-                            <div class="portfolio-content h-100">
-                                <img src="assets/img/portfolio/product-3.jpg" class="img-fluid" alt="">
-                                <div class="portfolio-info">
-                                    <h4>Product 3</h4>
-                                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="assets/img/portfolio/product-3.jpg" title="Product 3" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                                </div>
-                            </div>
-                        </div><!-- End Portfolio Item -->
-
-                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-                            <div class="portfolio-content h-100">
-                                <img src="assets/img/portfolio/branding-3.jpg" class="img-fluid" alt="">
-                                <div class="portfolio-info">
-                                    <h4>Branding 3</h4>
-                                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="assets/img/portfolio/branding-3.jpg" title="Branding 2" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                                </div>
-                            </div>
-                        </div><!-- End Portfolio Item -->
-
-                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-books">
-                            <div class="portfolio-content h-100">
-                                <img src="assets/img/portfolio/books-3.jpg" class="img-fluid" alt="">
-                                <div class="portfolio-info">
-                                    <h4>Books 3</h4>
-                                    <p>Lorem ipsum, dolor sit amet consectetur</p>
-                                    <a href="assets/img/portfolio/books-3.jpg" title="Branding 3" data-gallery="portfolio-gallery-book" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                                    <a href="portfolio-details.html" title="More Details" class="details-link"><i class="bi bi-link-45deg"></i></a>
-                                </div>
-                            </div>
-                        </div><!-- End Portfolio Item -->
+                            </div><!-- End Portfolio Item -->
+                        <?php endforeach; ?>
 
                     </div><!-- End Portfolio Container -->
 
@@ -524,20 +384,22 @@ $rowServices = mysqli_fetch_assoc($selectServices);
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
                 <h2>Services</h2>
-                <?php echo isset($rowServices['description_1']) ? $rowServices['description_1'] : '' ?>
+
             </div><!-- End Section Title -->
 
             <div class="container">
 
                 <div class="row gy-4">
+                    <?php foreach ($rowServices as $key => $value) { ?>
+                        <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="200">
+                            <div class="icon flex-shrink-0"><i class="<?php echo $value['icon'] ?>"></i></div>
+                            <div>
+                                <h4 class="title"><a href="service-details.html" class="stretched-link"><?php echo $value['title'] ?></a></h4>
+                                <p class="description"><?php echo $value['description'] ?></p>
+                            </div>
+                        </div><!-- End Service Item -->
+                    <?php } ?>
 
-                    <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="100">
-                        <div class="icon flex-shrink-0"><i class="bi bi-briefcase"></i></div>
-                        <div>
-                            <h4 class="title"><a href="service-details.html" class="stretched-link">Layanan</a></h4>
-                            <?php echo isset($rowServices['description_2']) ? $rowServices['description_2'] : '' ?>
-                        </div>
-                    </div>
                     <!-- End Service Item -->
 
                     <div class="col-lg-4 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="200">
@@ -566,7 +428,7 @@ $rowServices = mysqli_fetch_assoc($selectServices);
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
                 <h2>Testimonials</h2>
-                <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+                <?php echo isset($rowTestimonial['description_testi']) ? $rowTestimonial['description_testi'] : '' ?>
             </div><!-- End Section Title -->
 
             <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -598,71 +460,18 @@ $rowServices = mysqli_fetch_assoc($selectServices);
                         }
                     </script>
                     <div class="swiper-wrapper">
+                        <?php foreach ($rowTestimonials as $key => $rowTestimonial) { ?>
+                            <div class="swiper-slide">
+                                <div class="testimonial-item">
+                                    <span><?php echo isset($rowTestimonial['description']) ? $rowTestimonial['description'] : '' ?></span>
+                                    <img src="assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
+                                    <h3><?php echo isset($rowTestimonial['name']) ? $rowTestimonial['name'] : '' ?></h3>
+                                    <h4><?php echo isset($rowTestimonial['profession']) ? $rowTestimonial['profession'] : '' ?></h4>
+                                </div>
+                            </div><!-- End testimonial item -->
+                        <?php } ?>
 
-                        <div class="swiper-slide">
-                            <div class="testimonial-item">
-                                <p>
-                                    <i class="bi bi-quote quote-icon-left"></i>
-                                    <span>Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.</span>
-                                    <i class="bi bi-quote quote-icon-right"></i>
-                                </p>
-                                <img src="assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
-                                <h3>Saul Goodman</h3>
-                                <h4>Ceo &amp; Founder</h4>
-                            </div>
-                        </div><!-- End testimonial item -->
 
-                        <div class="swiper-slide">
-                            <div class="testimonial-item">
-                                <p>
-                                    <i class="bi bi-quote quote-icon-left"></i>
-                                    <span>Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.</span>
-                                    <i class="bi bi-quote quote-icon-right"></i>
-                                </p>
-                                <img src="assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
-                                <h3>Sara Wilsson</h3>
-                                <h4>Designer</h4>
-                            </div>
-                        </div><!-- End testimonial item -->
-
-                        <div class="swiper-slide">
-                            <div class="testimonial-item">
-                                <p>
-                                    <i class="bi bi-quote quote-icon-left"></i>
-                                    <span>Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.</span>
-                                    <i class="bi bi-quote quote-icon-right"></i>
-                                </p>
-                                <img src="assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
-                                <h3>Jena Karlis</h3>
-                                <h4>Store Owner</h4>
-                            </div>
-                        </div><!-- End testimonial item -->
-
-                        <div class="swiper-slide">
-                            <div class="testimonial-item">
-                                <p>
-                                    <i class="bi bi-quote quote-icon-left"></i>
-                                    <span>Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.</span>
-                                    <i class="bi bi-quote quote-icon-right"></i>
-                                </p>
-                                <img src="assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
-                                <h3>Matt Brandon</h3>
-                                <h4>Freelancer</h4>
-                            </div>
-                        </div><!-- End testimonial item -->
-
-                        <div class="swiper-slide">
-                            <div class="testimonial-item">
-                                <p>
-                                    <i class="bi bi-quote quote-icon-left"></i>
-                                    <span>Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.</span>
-                                    <i class="bi bi-quote quote-icon-right"></i>
-                                </p>
-                                <img src="assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
-                                <h3>John Larson</h3>
-                                <h4>Entrepreneur</h4>
-                            </div>
-                        </div><!-- End testimonial item -->
 
                     </div>
                     <div class="swiper-pagination"></div>

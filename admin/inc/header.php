@@ -31,9 +31,6 @@ $id_level = isset($_SESSION['LEVEL']) ? $_SESSION['LEVEL'] : '';
                     </li>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Skill</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="?page=portofolio">Portofolio</a>
                     </li>
                     <li class="nav-item">
@@ -44,6 +41,12 @@ $id_level = isset($_SESSION['LEVEL']) ? $_SESSION['LEVEL'] : '';
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="?page=resume">Resume</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?page=testimonial">Testimonial</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?page=skill">Skill</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav mr-auto mb-2 mb-lg-0">

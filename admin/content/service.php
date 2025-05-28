@@ -1,46 +1,42 @@
-<?php 
-if (isset($_POST['simpan'])) {
-    $description_1 = $_POST['description_1'];
-    $description_2 = $_POST['description_2'];
-    $description_3 = $_POST['description_3'];
-    $description_4 = $_POST['description_4'];
+<?php
+$query = mysqli_query($config, "SELECT * FROM services ORDER BY id DESC");
+$row = mysqli_fetch_all($query, MYSQLI_ASSOC);
 
-    $insertQ = mysqli_query($config, "INSERT INTO services (description_1, description_2, description_3, description_4) VALUE('$description_1', '$description_2', '$description_3', '$description_4')");
-    header("location:?page=service&ditambah=berhasil");
+if (isset($_GET['delete'])) {
+    $id = $_GET['delete'];
+    $queryDelete = mysqli_query($config, "DELETE FROM services WHERE id='$id'");
+    header("location:?page=service&hapus=berhasil");
 }
-
-$selectServices = mysqli_query($config, "SELECT * FROM services ORDER BY id DESC");
-$rowServices = mysqli_fetch_all($selectServices, MYSQLI_ASSOC);
 ?>
-
-<form action="" method="post" enctype="multipart/form-data">
-    <div class="mb-3 row">
-        <div class="col-sm-12">
-            <label for="">Description_1 *</label>
-            <textarea id="summernote_1" class="form-control" name="description_1" cols="30" rows="5" <?= isset($rowEdit['description_1']) ? $rowEdit['description_1'] : '' ?>></textarea>
+<div class="card-body">
+    <div class="tabel-responsive">
+        <div align="right" class="mb-3">
+            <a href="?page=tambah-service" class="btn btn-primary">Tambah</a>
         </div>
+        <table id="table" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Judul</th>
+                    <th>Icon</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                foreach ($row as $key => $data):  ?>
+                    <tr>
+                        <td><?= $key + 1 ?></td>
+                        <td><?= $data['title'] ?></td>
+                        <td><?= $data['icon'] ?></td>
+                        <td><?= $data['description'] ?></td>
+                        <td>
+                            <a href="?page=tambah-service&edit=<?php echo $data['id'] ?>" class="btn btn-success btn-sm">Edit</a>
+                            <a onclick="return confirm('Are you sure??')" href="?page=service&delete=<?php echo $data['id'] ?>" class="btn btn-warning btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                <?php endforeach ?>
+            </tbody>
+        </table>
     </div>
-    <div class="mb-3 row">
-        <div class="col-sm-12">
-            <label for="">Description_2 *</label>
-            <textarea id="summernote_2" class="form-control" name="description_2" cols="30" rows="5" <?= isset($rowEdit['description_2']) ? $rowEdit['description_2'] : '' ?>></textarea>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <div class="col-sm-12">
-            <label for="">Description_3 *</label>
-            <textarea id="summernote_3" class="form-control" name="description_3" cols="30" rows="5" <?= isset($rowEdit['description_3']) ? $rowEdit['description_3'] : '' ?>></textarea>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <div class="col-sm-12">
-            <label for="">Description_4 *</label>
-            <textarea id="summernote_4" class="form-control" name="description_4" cols="30" rows="5" <?= isset($rowEdit['description_2']) ? $rowEdit['description_2'] : '' ?>></textarea>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <div class="col-sm-12">
-            <button name="<?= isset($_GET['edit']) ? 'edit' : 'simpan'; ?>" type="submit" class="btn btn-primary">Simpan</button>
-        </div>
-    </div>
-</form>
+</div>
