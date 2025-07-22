@@ -18,6 +18,7 @@ $id_level = isset($_SESSION['LEVEL']) ? $_SESSION['LEVEL'] : '';
                             Page
                         </a>
                         <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="?page=manage-home">Manage Home</a></li>
                             <li><a class="dropdown-item" href="?page=manage-profile">Management Profile</a></li>
                             <!-- jika level admin maka bisa dapat halaman user, bukan admin maka janagan atau hilang -->
                             <?php if ($id_level == 1): ?>
@@ -31,7 +32,7 @@ $id_level = isset($_SESSION['LEVEL']) ? $_SESSION['LEVEL'] : '';
                     </li>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Skill</a>
+                        <a class="nav-link" href="?page=skill">Skill</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="?page=portofolio">Portofolio</a>
@@ -42,8 +43,15 @@ $id_level = isset($_SESSION['LEVEL']) ? $_SESSION['LEVEL'] : '';
                     <li class="nav-item">
                         <a class="nav-link" href="?page=service">Service</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="?page=resume">Resume</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Resume
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="?page=sumary">Sumary</a></li>
+                            <li><a class="dropdown-item" href="?page=education">Education</a></li>
+                            <li><a class="dropdown-item" href="?page=experience">Profesional Experience</a></li>
+                        </ul>
                     </li>
                 </ul>
                 <ul class="navbar-nav mr-auto mb-2 mb-lg-0">

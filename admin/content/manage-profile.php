@@ -11,7 +11,6 @@ if (isset($_POST['simpan'])) {
     $email = $_POST['email'];
     $freelance = $_POST['freelance'];
     $description = $_POST['description'];
-    $status = $_POST['status'];
     $photo = $_FILES['photo']['name'];
     $tmp_name = $_FILES['photo']['tmp_name'];
     $fileName = uniqid() . "_" . basename($photo);
@@ -31,11 +30,11 @@ if (isset($_POST['simpan'])) {
             unlink("uploads/" . $rowProfile['photo']);
             move_uploaded_file($tmp_name, $filePath);
 
-            $update = mysqli_query($config, "UPDATE abouts SET name='$name', position_name='$position_name', photo='$fileName', birthday='$birthday', website='$website', phone='$phone', city='$city', age='$age', degree='$degree', email='$email', freelance='$freelance', description='$description', status='$status' WHERE id = '$id'");
+            $update = mysqli_query($config, "UPDATE abouts SET name='$name', position_name='$position_name', photo='$fileName', birthday='$birthday', website='$website', phone='$phone', city='$city', age='$age', degree='$degree', email='$email', freelance='$freelance', description='$description' WHERE id = '$id'");
             header("location:?page=manage-profile&ubah=berhasil");
         } else {
             // PERINTAH UPDATE
-            $update = mysqli_query($config, "UPDATE abouts SET name='$name', position_name='$position_name', photo='$fileName', birthday='$birthday', website='$website', phone='$phone', city='$city', age='$age', degree='$degree', email='$email', freelance='$freelance', description='$description', status='$status' WHERE id = '$id'");
+            $update = mysqli_query($config, "UPDATE abouts SET name='$name', position_name='$position_name', birthday='$birthday', website='$website', phone='$phone', city='$city', age='$age', degree='$degree', email='$email', freelance='$freelance', description='$description' WHERE id = '$id'");
             header("location:?page=manage-profile&ubah=berhasil");
         }
     } else {
@@ -43,11 +42,11 @@ if (isset($_POST['simpan'])) {
         if (!empty($photo)) {
             move_uploaded_file($tmp_name, $filePath);
             // JIKA USER MENGUPLOAD FOTO
-            $insertQ = mysqli_query($config, "INSERT INTO abouts (name, position_name, photo, birthday, website, phone, city, age, degree, email, freelance, description, status) VALUES ('$name', '$position_name', '$fileName', '$birthday', '$website', '$phone', '$city', '$age', '$degree', '$email', '$freelance', '$description', '$status')");
+            $insertQ = mysqli_query($config, "INSERT INTO abouts (name, position_name, photo, birthday, website, phone, city, age, degree, email, freelance, description) VALUES ('$name', '$position_name', '$fileName', '$birthday', '$website', '$phone', '$city', '$age', '$degree', '$email', '$freelance', '$description')");
             header("location:?page=manage-profile&ubah=berhasil");
         } else {
             // JIKA USER TIDAK MENGUPLOAD FOTO
-            $insertQ = mysqli_query($config, "INSERT INTO abouts (name, position_name, birthday, website, phone, city, age, degree, email, freelance, description, status) VALUES ('$name', '$position_name', '$birthday', '$website', '$phone', '$city', '$age', '$degree', '$email', '$freelance', '$description', '$status')");
+            $insertQ = mysqli_query($config, "INSERT INTO abouts (name, position_name, birthday, website, phone, city, age, degree, email, freelance, description) VALUES ('$name', '$position_name', '$birthday', '$website', '$phone', '$city', '$age', '$degree', '$email', '$freelance', '$description')");
             header("location:?page=manage-profile&ubah=berhasil");
         }
 
@@ -163,22 +162,13 @@ $rowEdit = mysqli_fetch_assoc($selectProfile);
         </div>
         <div class="col-sm-10">
             <input name="photo" type="file">
-            <img src="<?php echo "uploads/" . $rowEdit['photo'] ?>" alt="">
+            <img src="<?php echo "uploads/" . $rowEdit['photo'] ?>" alt="Photo" width="100px">
         </div>
     </div>
     <div class="mb-3 row">
         <div class="col-sm-12">
             <label for="">Description *</label>
-            <textarea id="summernote" class="form-control" name="description" cols="30" rows="5" <?= isset($rowEdit['description']) ? $rowEdit['description'] : '' ?>></textarea>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <div class="col-sm-2">
-            <label for="">Status</label>
-        </div>
-        <div>
-            <input type="radio" name="status" value="1" checked> Publish
-            <input type="radio" name="status" value="0"> Draft
+            <textarea id="summernote" class="form-control" name="description" cols="30" rows="5" ><?= isset($rowEdit['description']) ? $rowEdit['description'] : '' ?></textarea>
         </div>
     </div>
     <div class="mb-3 row">

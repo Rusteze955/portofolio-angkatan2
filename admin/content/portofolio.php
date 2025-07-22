@@ -1,53 +1,44 @@
-<?php
-if (isset($_POST['simpan'])) {
-    $description = $_POST['description'];
-    $photo_1 = $_POST['photo_1'];
-    $photo_2 = $_POST['photo_2'];
-    $photo_3 = $_POST['photo_3'];
-    header("location:?page=portofoilio&hapus=berhasil");
-}
-
-$query = mysqli_query($config, "SELECT * FROM contacts ORDER BY id DESC");
+<?php 
+$query = mysqli_query($config, "SELECT * FROM portofolios ORDER BY id DESC");
 $row = mysqli_fetch_all($query, MYSQLI_ASSOC);
-?>
 
-<form action="" method="post" enctype="multipart/form-data">
-    <div class="mb-3 row">
-        <div class="col-sm-12">
-            <label for="">Description *</label>
-            <textarea id="summernote" class="from-control" name="description" cols="30" rows="5" <?= isset($rowEdit['description']) ? $rowEdit['description'] : '' ?>></textarea>
+if (isset($_GET['delete'])) {
+    $id = $_GET['delete'];
+    $queryDelete = mysqli_query($config, "DELETE FROM portofolios WHERE id='$id'");
+    header("location:?page=portofolio&hapus=berhasil");
+}
+?>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="table-responsive">
+            <div class="mb-3" align="right">
+                <a class="btn btn-primary" href="?page=tambah-portofolio">Add Portofolio</a>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Photo</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($row as $index => $porto) { ?>
+                        <tr>
+                            <td><?= $index +=1 ?></td>
+                            <td><?= $porto ['name_porto'] ?></td>
+                            <td><?= $porto ['description'] ?></td>
+                            <td><img src="uploads/<?= $porto ['photo'] ?>" alt="" width="100px"></td>
+                            <td>
+                                <a href="?page=tambah-portofolio&edit=<?php echo $porto['id'] ?>" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="?page=portofolio&delete=<?php echo $porto['id'] ?>" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
         </div>
     </div>
-    <div class="mb-3 row">
-        <div class="col-sm-2">
-            <label for="">Foto 1 *</label>
-        </div>
-        <div class="col-sm-10">
-            <input name="photo" type="file">
-            <img src="<?php echo "uploads/" . $rowEdit['photo_1'] ?>" alt="">
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <div class="col-sm-2">
-            <label for="">Foto 2 *</label>
-        </div>
-        <div class="col-sm-10">
-            <input name="photo" type="file">
-            <img src="<?php echo "uploads/" . $rowEdit['photo_2'] ?>" alt="">
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <div class="col-sm-2">
-            <label for="">Foto 3 *</label>
-        </div>
-        <div class="col-sm-10">
-            <input name="photo" type="file">
-            <img src="<?php echo "uploads/" . $rowEdit['photo_3'] ?>" alt="">
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <div class="col-sm-12">
-            <button name="<?= isset($_GET['edit']) ? 'edit' : 'simpan'; ?>" type="submit" class="btn btn-primary">Simpan</button>
-        </div>
-    </div>
-</form>
+</div>
